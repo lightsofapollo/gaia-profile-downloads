@@ -5,7 +5,6 @@ var git = require('./build/git')(),
     targz = require('tar.gz');
 
 var GAIA = __dirname + '/gaia/';
-var PREBUILD = __dirname + '/profiles/';
 
 function cloneGaia() {
   var REPO = 'git://github.com/mozilla-b2g/gaia.git';
@@ -17,15 +16,16 @@ function cloneGaia() {
 
 function createProfile(gaia, branch, callback) {
   console.log('Copying profile for: ', branch);
+  var relative = 'profiles/' + branch + '.tar.gz';
   var source = gaia.dir + '/profile';
-  var target = PREBUILD + '/' + branch + '.tar.gz';
+  var target = __dirname + '/' + relative;
 
   gaia.makeBranch(branch, function(err) {
     if (err) return console.error(err);
     new targz().compress(source, target, function(err) {
       if (err) return console.error(err);
       console.log('done saved target: ', target);
-      callback();
+      callback(null, relative);
     });
   });
 }
@@ -42,13 +42,22 @@ function findBranches() {
       return false;
     });
 
+    var createdProfiles = {};
+
     function next() {
       var branch = list.shift();
       if (!branch) {
+        fs.writeFileSync(
+          __dirname + '/profiles/index.json',
+          JSON.stringify(createdProfiles)
+        );
         return console.log('Done!');
       }
 
-      createProfile(gaia, branch, next);
+      createProfile(gaia, branch, function(err, path) {
+        createdProfiles[branch] = path;
+        process.nextTick(next);
+      });
     }
 
     next();
