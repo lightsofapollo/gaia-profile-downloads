@@ -1,9 +1,10 @@
 {
-  "name": "mozilla-profile-builder",
+  "name": "gaia-profile-downloads",
   "version": "0.0.1",
   "author": "James Lal [:lightsofapollo]",
   "description": "Create profiles for firefox/b2g desktop",
   "main": "index.js",
+  "private": true,
   "keywords": [
     "firefox os",
     "gecko",
@@ -12,7 +13,8 @@
   ],
   "dependencies" : {
     "debug": "*",
-    "remove": "~0.1"
+    "remove": "~0.1",
+    "tar.gz": "~0.1"
   },
   "devDependencies": {
     "mocha": "~1.7"
