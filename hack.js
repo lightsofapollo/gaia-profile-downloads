@@ -1,13 +1,12 @@
-var GIT = require('git-wrapper'),
+var git = require('./lib/git')(),
     fs = require('fs');
 
 var GAIA = __dirname + '/gaia/';
 
 function cloneGaia() {
-  var git = new GIT();
   var REPO = 'git://github.com/mozilla-b2g/gaia.git';
 
-  git.exec('clone', [REPO], function(err, res) {
+  git.exec(['clone', REPO], function(err, res) {
     testGaia();
   });
 }

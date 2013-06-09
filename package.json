@@ -12,7 +12,6 @@
   ],
   "dependencies" : {
     "debug": "*",
-    "git-wrapper": "~0.1",
     "remove": "~0.1"
   },
   "devDependencies": {
