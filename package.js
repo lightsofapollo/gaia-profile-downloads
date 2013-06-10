@@ -31,7 +31,13 @@ function createProfile(gaia, branch, callback) {
 }
 
 
-var EXCLUDES = ['HEAD'];
+var EXCLUDES = [
+  // git ref
+  'HEAD',
+  // released
+  'v1.0.0'
+];
+
 function findBranches() {
   var gaia = new (require('./build/gaia').Gaia)(GAIA);
   gaia.branches(function(err, list) {

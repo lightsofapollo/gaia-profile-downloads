@@ -69,9 +69,12 @@ Gaia.prototype = {
    *  });
    */
   make: function(envs, callback) {
+    // places database- not strictly required and is 10mb.
+    var PLACES = 'places.sqlite';
+
     if (typeof envs === 'function') {
       callback = envs;
-      envs = null;
+      envs = ['GAIA_OPTIMIZE=1', 'PRODUCTION=1'];
     }
 
     var command = [
@@ -93,7 +96,9 @@ Gaia.prototype = {
     debug('make', command.join(' '));
     exec(command.join(' '), { env: envCopy }, function(err, stdout, stderr) {
       if (err) return callback(err);
-      callback();
+      fs.unlink(fsPath.join(this.dir, 'profile', PLACES), function() {
+        callback();
+      });
     });
   },
 
